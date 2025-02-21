@@ -28,7 +28,7 @@
         // Enviar uma mensagem inicial do bot assim que a página carregar
         window.onload = function() {
             setTimeout(() => {
-                appendBotMessage("Olá! Sou sua assistente virtual, desenvolvida para te auxiliar nos nossos processos. Por favor, me diga: você atende UX ou Reals?");
+                appendBotMessage("Olá! Sou sua assistente virtual, desenvolvida para te auxiliar nos nossos processos.");
             }, 500);
         };
  
@@ -95,16 +95,13 @@
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', 'message-bot');
            
-            // Substituindo quebras de linha por tags de parágrafo <p>
             let formattedText = responseText.replace(/\n/g, '</p><p>');
             formattedText = `<p>${formattedText}</p>`;  // Envolvendo o conteúdo em <p>
            
-            // Se o texto contiver listas, formatando como <ul> ou <ol>
             formattedText = formattedText.replace(/^\d+\./gm, (match) => {
                 return `<li>${match}</li>`;
             });
  
-            // Adicionando a mensagem formatada
             messageDiv.innerHTML = formattedText;
             chatWindow.appendChild(messageDiv);
             chatWindow.scrollTop = chatWindow.scrollHeight;
