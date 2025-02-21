@@ -1,0 +1,33 @@
+{
+    "Reals": {
+        "saque cancelado": "Isso pode ser causado por informações bancárias incorretas no cadastro da plataforma, o que impede a transação.",
+ 
+        "Sacar": "Confirme os dados bancários e oriente o cliente a usar o mesmo banco da chave Pix(CPF) registrada.",
+ 
+        "Saque": "Confirme os dados bancários e oriente o cliente cadastrar uma conta com mesmo banco da chave Pix(CPF) registrada. após o cliente cadastrar o banco corretamente, acompanhe o saque para ver se será concluído.",
+ 
+        "Delay de deposito": "Verifique no BackOffice se o depósito foi processado corretamente. Caso não tenha sido identificado, peça ao cliente um comprovante de pagamento para validar a transação. Oriente o cliente a conferir se o valor foi debitado da conta e se os dados utilizados no depósito estão corretos. Alguns métodos podem levar mais tempo para compensação, dependendo do banco ou meio de pagamento.Se necessário, encaminhe o caso para análise com o comprovante para o N2",
+ 
+        "depositar": "solicite um print do erro que consta quando o usuario tenta realizar um deposito, ou se o valor não estiver sendo enviado para a plataforma solicite o comprovante de deposito para verificar o que está ocorrendo.",
+ 
+        "Deposito": "Solicite o comprovante bancário completo, é necessário que o mesmo tenha. Remetente, destinatário, data, horário, valor e ID de transação. e confirme as informações no BackOffice ou intermediadora. caso não seja concluído contate um N2",
+ 
+        "freebet": "freebet é um tipo de bonus oferecido para os usuarios utilizar o valor determinado valor em uma aposta",
+ 
+        "Bonus": "Pergunte ao cliente de qual bonus está se referindo, caso ele informe um bonus que esta em ativa no momento faça a analise normalmente, caso o bonus não esteja ativo ou expirado informe ao cliente e solicite que ele nos acompanhe no nstagram",
+ 
+        "login": "Peça um print do que ocorre quando o cliente tenta acessar a conta e verifique se o usuario está digitando seu e-mail/cpf/user corretamente, caso a informação esteja correta e ainda não consiga acessar a conta, solicite a redefinição de senha",
+       
+        "acessar": "Peça um print do que ocorre quando o cliente tenta acessar a conta e verifique se o usuario está digitando seu e-mail/cpf/user corretamente, caso a informação esteja correta e ainda não consiga acessar a conta, solicite a redefinição de senha",
+ 
+        "conta": "Peça um print do que ocorre quando o cliente tenta acessar a conta e verifique se o usuario está digitando seu e-mail/cpf/user corretamente, caso a informação esteja correta e ainda não consiga acessar a conta, solicite a redefinição de senha",
+ 
+        "aposta esportiva": "solicite um print do blihete de aposta do cliente, caso a partida tenha se encerrado e o jogo ainda está em aberto informe um N2., caso seja outro caso, realize a analise normalmente e auxilie o usuario.",
+   
+        "Aposta": "Primeiro solicite ao cliente informar o que ocorreu, após isso peça um print do histórico de apostas dentro do jogo com a aposta em questão, após verificar qual é a aposta, verifique no BackOffice o que ocorreu com a aposta e se de fato ocorreu um erro, caso tenha ocorrido um erro, junte prints que mostram o erro, informe o que ocorreu e envie o caso para a fila de N2",
+ 
+        "validação": "caso o usuario não esteja conseguindo realizar a validção, consulte o CPF do usuario na base da legitimuz e verifique o que está ocorrendo com a validação e faça analise, caso necessario consulte o N2.",
+ 
+        "Regulamentação": "caso o usuario não esteja conseguindo realizar a validação, consulte o CPF do usuario na base da legitimuz e verifique o que está ocorrendo com a validação. caso necessario consulte um N2"
+    }
+}
