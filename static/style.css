@@ -1,0 +1,181 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #160F20;
+    background: linear-gradient(to right, #160F20 55%, #160F20);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+ 
+.chat-container {
+    background-color: #ffffff;
+    border-radius: 12px; /* Cantos mais arredondados */
+    width: 400px;
+    box-shadow: 0px 6px 24px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+    overflow: hidden;
+}
+ 
+.chat-header {
+    background-color: #40c494;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.4rem;
+    color: #fff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza a imagem e o texto */
+}
+ 
+.chat-header .header-img {
+    width: 40px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+    object-fit: contain; /* Garante que a imagem se ajuste sem distorcer */
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+}
+ 
+.chat-window {
+    height: 450px;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #fafafa; /* Cor mais suave */
+    display: flex;
+    flex-direction: column; /* Alinha as mensagens em coluna */
+}
+ 
+.message {
+    margin: 10px 0;
+    padding: 14px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições mais suaves */
+    max-width: 90%; /* Ajusta para 90% da largura disponível */
+    display: inline-block; /* Faz com que o balão se ajuste ao texto */
+}
+ 
+.message-user {
+    background-color: #000000; /* Tom suave */
+    color: #ffffff;
+    text-align: right; /* Alinha as mensagens do usuário à direita */
+    max-width: 90%; /* Ajusta a largura máxima */
+    display: inline-block; /* Faz com que o balão se ajuste ao texto */
+    align-self: flex-end; /* Garante que a mensagem do usuário fique à direita */
+}
+ 
+.message-bot {
+    background-color: #000000; /* Tom suave */
+    color: #ffffff;
+    max-width: 90%; /* Ajusta a largura máxima */
+    display: inline-block; /* Faz com que o balão se ajuste ao texto */
+}
+ 
+.message.loading {
+    background-color: #48484873;
+    color: transparent;
+    text-align: left;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    min-height: 30px; /* Garante um espaço mínimo */
+}
+ 
+.message.loading:after {
+    content: "• • •";
+    animation: typing 1.5s infinite steps(5, end);
+}
+ 
+@keyframes typing {
+    0% { content: "• "; }
+    25% { content: "• • "; }
+    50% { content: "• • •"; }
+    75% { content: "• • •"; }
+    100% { content: "• • •"; }
+}
+ 
+.chat-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 14px;
+    background-color: #000000;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+ 
+.chat-input input {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 25px; /* Borda arredondada maior */
+    outline: none;
+    font-size: 1rem;
+    background-color: #ffffff; /* Cor de fundo suave */
+    transition: background-color 0.3s ease;
+}
+ 
+.chat-input input:focus {
+    background-color: #ffffff; /* Foco mais suave */
+}
+ 
+.chat-input button {
+    background-color: #40c494;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    margin-left: 16px;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+ 
+.chat-input button:hover {
+    background-color: #3e6f6f;
+    transform: scale(1.05); /* Efeito de aumento suave */
+}
+ 
+.chat-input button:active {
+    transform: scale(0.98); /* Efeito de contração ao clicar */
+}
+ 
+.chat-window .message {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+ 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+ 
+.add-process-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+ 
+/* Formatação adicional para parágrafos e listas */
+.message-bot p {
+    margin: 10px 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+ 
+.message-bot ul, .message-bot ol {
+    margin-left: 20px;
+    padding-left: 10px;
+}
+ 
+.message-bot li {
+    margin-bottom: 5px;
+    font-size: 1rem;
+}

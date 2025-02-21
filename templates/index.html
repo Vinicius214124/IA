@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <img src="static/images/realsedccc.png" alt="Logo" class="header-logo">
+        </div>        
+        <div id="chat-window" class="chat-window">
+            <!-- Mensagens aparecerão aqui -->
+        </div>
+        <div class="chat-input">
+            <input id="user-input" type="text" placeholder="Digite sua mensagem...">
+            <button id="send-btn">Enviar</button>
+        </div>
+    </div>
+ 
+    <script>
+        const sendBtn = document.getElementById('send-btn');
+        const userInput = document.getElementById('user-input');
+        const chatWindow = document.getElementById('chat-window');
+ 
+        // Enviar uma mensagem inicial do bot assim que a página carregar
+        window.onload = function() {
+            setTimeout(() => {
+                appendBotMessage("Olá! Sou sua assistente virtual, desenvolvida para te auxiliar nos nossos processos. Por favor, me diga: você atende UX ou Reals?");
+            }, 500);
+        };
+ 
+        sendBtn.addEventListener('click', sendMessage);
+ 
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+ 
+        function sendMessage() {
+            const message = userInput.value;
+            if (message.trim() !== "") {
+                appendMessage("Você", message, "message-user");
+                appendLoadingMessage();
+ 
+                fetch('http://127.0.0.1:5000/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    removeLoadingMessage();
+                    appendBotMessage(data.response || "Ocorreu um erro.");
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    removeLoadingMessage();
+                    appendBotMessage("Erro na comunicação.");
+                });
+ 
+                userInput.value = "";
+            }
+        }
+ 
+        function appendMessage(sender, text, className) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', className);
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+ 
+        function appendLoadingMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'loading');
+            messageDiv.innerHTML = "<span class='dots'>...</span>";
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+ 
+        function removeLoadingMessage() {
+            const loadingMessage = document.querySelector('.loading');
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+ 
+        function appendBotMessage(responseText) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'message-bot');
+           
+            // Substituindo quebras de linha por tags de parágrafo <p>
+            let formattedText = responseText.replace(/\n/g, '</p><p>');
+            formattedText = `<p>${formattedText}</p>`;  // Envolvendo o conteúdo em <p>
+           
+            // Se o texto contiver listas, formatando como <ul> ou <ol>
+            formattedText = formattedText.replace(/^\d+\./gm, (match) => {
+                return `<li>${match}</li>`;
+            });
+ 
+            // Adicionando a mensagem formatada
+            messageDiv.innerHTML = formattedText;
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    </script>
+</body>
+</html>
