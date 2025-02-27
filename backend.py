@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import json
 from flask_cors import CORS
 import google.generativeai as genai
@@ -12,7 +12,13 @@ chat = model.start_chat(history=[])
 
 # Criando o app Flask
 app = Flask(__name__)
+app.secret_key = "a159a293d850aba32a1877383fd1a6b813fc74d9f8bf8173cbc98685c6b71edf"  # Necessário para gerenciar sessões
 CORS(app)
+
+# Usuários cadastrados (simulação)
+USERS = {
+    "webchat": "analistas65834983847534"
+}
 
 # Processos
 def load_processes():
@@ -25,10 +31,10 @@ PROCESSES = load_processes()
 # Instrução do papel da IA
 ROLE_MESSAGE = (
     """
-    Já estamos em contato com o cliente, não solicite para entrar em contato com o cliente, apenas informe para avisar ou pedir ao cliete.
+    Já estamos em contato com o cliente, não solicite para entrar em contato com o cliente, apenas informe para avisar ou pedir ao cliente.
     Eu ajudo a responder clientes. Quando o cliente faz uma pergunta, eu forneço respostas claras e objetivas com base no que ele precisa informar.
     Caso um processo específico não seja encontrado, responda de forma espontânea, como o analista poderia dizer ou informar, com base na mensagem recebida e informe para consultar com um N2.
-    Caso um usuario informe que nao entendeu ou solicitar para explicar de novo o processo passado, explique novamente.
+    Caso um usuário informe que não entendeu ou solicitar para explicar de novo o processo passado, explique novamente.
     Eu ajudo analistas responder clientes.
     Eu não preciso ser tão formal.
     Eu ajudo clientes no atendimento de uma casa de aposta sobre processos informados.
@@ -40,16 +46,31 @@ ROLE_MESSAGE = (
     """
 )
 
-# Variáveis globais
-user_area = "Reals"  # Definir a área "Reals" por padrão
-last_matched_process = None
-repeated_message_count = 0
-
 @app.route('/')
 def home():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template('index.html')
 
-# Rota para adicionar um atalho no iPhone
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get("email")
+        password = request.form.get("password")
+        
+        if email in USERS and USERS[email] == password:
+            session["user"] = email
+            return redirect(url_for("home"))
+        else:
+            return render_template("login.html", error="Credenciais inválidas")
+    
+    return render_template("login.html")
+
+@app.route('/logout')
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("login"))
+
 @app.route('/add-to-home')
 def add_to_home():
     return '''
@@ -74,51 +95,15 @@ def add_to_home():
 
 @app.route('/chat', methods=['POST'])
 def chat_with_bot():
-    global user_area, last_matched_process, repeated_message_count
-
+    if "user" not in session:
+        return jsonify({'response': 'Erro: Você precisa estar logado para usar o chatbot.'})
+    
     user_message = request.json.get('message', "").strip().lower()
     if not user_message:
         return jsonify({'response': 'Erro: Nenhuma mensagem recebida.'})
-
-    if user_message in ["reals"]:
-        repeated_message_count += 1
-        if repeated_message_count > 2:
-            return jsonify({'response': f"Já entendi que você atende {user_message.upper()}!"})
-    else:
-        repeated_message_count = 0
-
-    if "não entendi" in user_message or "explique novamente" in user_message or "me explique" in user_message:
-        if last_matched_process:
-            prompt = (
-                f"{ROLE_MESSAGE}\n\n"
-                f"O processo é o seguinte: {last_matched_process}\n"
-                "Explique de forma clara e detalhada como o analista deve proceder, usando linguagem acessível e didática."
-            )
-            try:
-                response = chat.send_message(prompt)
-                return jsonify({'response': response.text})
-            except Exception as e:
-                print(f"Erro ao chamar a API do Google: {e}")
-                return jsonify({'response': "Desculpe, houve um erro ao processar sua solicitação."})
-        else:
-            prompt = (
-                f"{ROLE_MESSAGE}\n\n"
-                f"Mensagem recebida do usuário: {user_message}\n"
-                "Responda de forma espontânea, como o analista poderia informar ao cliente."
-            )
-            try:
-                response = chat.send_message(prompt)
-                return jsonify({'response': response.text})
-            except Exception as e:
-                print(f"Erro ao chamar a API do Google: {e}")
-                return jsonify({'response': "Desculpe, houve um erro ao processar sua solicitação."})
-
-def match_process(user_message):
-    for category, processes in PROCESSES.items():
-        for process_name, process_desc in processes.items():
-            if process_name.lower() in user_message:
-                return process_desc
-    return None
+    
+    response = chat.send_message(user_message)
+    return jsonify({'response': response.text})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=10000)

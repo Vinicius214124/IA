@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="login-container">
+        <form class="login-form" method="POST">
+            <h2>Bem-vindo!</h2>
+            <p>Faça login para acessar o chatbot</p>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="text" name="email" required placeholder="Digite seu email">
+            </div>
+
+            <div class="input-group">
+                <label>Senha</label>
+                <input type="password" name="password" required placeholder="Digite sua senha">
+            </div>
+
+            <button type="submit">Entrar</button>
+
+            {% if error %}
+            <p class="error-message">{{ error }}</p>
+            {% endif %}
+        </form>
+    </div>
+
+</body>
+</html>
